@@ -27,6 +27,18 @@ public class State {
 		this.transicoes = transicoes;
 	}
 	
+	public boolean equals(State state){ //Dois estados sao iguais se tem o mesmo nome
+		return this.getName().equals(state.getName());
+	}
+	
+	public String toString(){
+		return this.name;
+	}
+	
+	public void addTransicao(Transicao transicao){
+		this.getTransicoes().add(transicao);
+	}
+	
 	
 
 	

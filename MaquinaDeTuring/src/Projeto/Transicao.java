@@ -1,34 +1,34 @@
 package Projeto;
 public class Transicao {
 	
-	String estadoAtual; //Talvez nao precise, ja que a transicao compoe um State.
-	String simboloAtual; //Simbolo que esta sendo lido
+	String estado; //Estado que a transicao pertence (que ela "sai").
+	String simboloLido; //Simbolo que esta sendo lido
 	String novoSimbolo; //Simbolo que sera escrito
 	String direcao;  //Direcao que a cabeça vai anda (dir ou esquerda)
-	State novoEstado; //Novo estado em que a maquina de Turing vai operar (pode ser o mesmo)
+	State novoEstado; //Novo estado em que a transicao leva (pode ser o mesmo).
 	
-	public Transicao(String estadoAtual, String simboloAtual, String novoSimbolo, String direcao, State novoEstado) {
-		this.estadoAtual = estadoAtual;
-		this.simboloAtual = simboloAtual;
+	public Transicao(String estado, String simboloLido, String novoSimbolo, String direcao, State novoEstado) {
+		this.estado = estado;
+		this.simboloLido = simboloLido;
 		this.novoSimbolo = novoSimbolo;
 		this.direcao = direcao;
 		this.novoEstado = novoEstado;
 	}
 
-	public String getEstadoAtual() {
-		return estadoAtual;
+	public String getEstado() {
+		return estado;
 	}
 
-	public void setEstadoAtual(String estadoAtual) {
-		this.estadoAtual = estadoAtual;
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 
-	public String getSimboloAtual() {
-		return simboloAtual;
+	public String getSimboloLido() {
+		return simboloLido;
 	}
 
-	public void setSimboloAtual(String simboloAtual) {
-		this.simboloAtual = simboloAtual;
+	public void setSimboloLido(String simboloLido) {
+		this.simboloLido = simboloLido;
 	}
 
 	public String getNovoSimbolo() {
