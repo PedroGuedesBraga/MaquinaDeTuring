@@ -16,7 +16,7 @@ public class Transicao {
 	}
 
 	public String getEstado() {
-		return estado;
+		return estado; //RETORNA O NOME DO ESTADO
 	}
 
 	public void setEstado(String estado) {

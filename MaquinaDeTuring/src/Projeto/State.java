@@ -11,7 +11,7 @@ public class State {
 		this.transicoes = new LinkedList<Transicao>();
 	}
 
-	public String getName() {
+	public String getName() { 
 		return name;
 	}
 
@@ -27,10 +27,16 @@ public class State {
 		this.transicoes = transicoes;
 	}
 	
-	public boolean equals(State state){ //Dois estados sao iguais se tem o mesmo nome
-		return this.getName().equals(state.getName());
+	//Sobrescrita do equals para usar no contains
+	@Override
+	public boolean equals(Object state){ //Dois estados sao iguais se tem o mesmo nome
+		if(state instanceof State){
+			return ((State) state).getName().equals(this.getName());
+		}
+		return false;
 	}
 	
+	@Override
 	public String toString(){
 		return this.name;
 	}
