@@ -18,7 +18,7 @@ public class TesteMaquina {
 	@Test
 	public void test() {
 	MaquinaDeTuring mt = new MaquinaDeTuring("C:/Users/pedro/Desktop/UFCG/MaquinaDeTuring/MaquinaDeTuring/src/testes/arquivoPalindromo.txt");
-	mt.processa("1001001");
+	mt.processa("10010011");
 	System.out.println(mt.estadoAtual);
 	
 	} 
