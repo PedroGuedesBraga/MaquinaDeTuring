@@ -5,10 +5,12 @@ public class State {
 	
 	String name;
 	LinkedList<Transicao> transicoes; //Cada estado tem um conjunto de transicoes
+	boolean isFinal; //Se o estado e de acc ou rej
 	
-	public State(String name){
+	public State(String name, boolean isFinal){
 		this.name = name;
 		this.transicoes = new LinkedList<Transicao>();
+		this.isFinal = isFinal;
 	}
 
 	public String getName() { 

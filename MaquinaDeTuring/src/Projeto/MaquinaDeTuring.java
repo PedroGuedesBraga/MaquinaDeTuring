@@ -40,9 +40,15 @@ public class MaquinaDeTuring {
 	//*VER COMO TRATAR O CARACTERE BRANCO NA LINKEDLIST
 	private void run(){
 		//Enquanto nao estiver em um estado de aceitacao ou rejeicao, a maquina continua rodando - Estados de act/rej comecam com "halt"
-		while(!estadoAtual.getName().equals("accept") && !estadoAtual.getName().equals("reject")){ //Enquanto nao chegar nos estados de acc e rej, a MT roda
+		while(!isFinalState(estadoAtual)){ //Enquanto nao chegar nos estados de acc e rej, a MT roda
 			System.out.println(this.listaDeCaracteres.toString());
 			for(Transicao transicao : estadoAtual.getTransicoes()){
+				
+				
+				
+				//O ERRO BUG DO "_" PERTENCER A * ESTÁ NESSE IF ABAIXO!!!!
+				
+				
 				if(transicao.getSimboloLido().equals(this.caractereAtual) || (transicao.getSimboloLido().equals("*") && !this.caractereAtual.equals("_"))){ //"*" Em simboloLido significa: Qualquer simbolo, tirando o "_" (BRANCO)
 					if(transicao.getNovoSimbolo().equals("*")){
 					//"*" em novoSimbolo, significa "no change"
@@ -71,7 +77,7 @@ public class MaquinaDeTuring {
 					}else if(this.cabeca == 0){
 						this.listaDeCaracteres.addFirst("_");
 						this.cabeca++; //Quando e adicionado branco na frente, o valor da cabeca aumenta
-					}
+					} 
 					
 					
 					//Atualiza o caractere atual
@@ -92,7 +98,7 @@ public class MaquinaDeTuring {
 		//Cria os estados
 		for(String[] array : infoComponentes){
 			String nomeDoEstado = array[0];
-			State novoEstado = new State(nomeDoEstado);
+			State novoEstado = new State(nomeDoEstado, false);
 			if(!this.states.contains(novoEstado)){
 				this.states.add(novoEstado);	
 			}
@@ -127,7 +133,13 @@ public class MaquinaDeTuring {
 				return estado;
 			}
 		}
-		return null;
+		//Se nao encontrou, e porque esta indo para o estado final
+		return new State(name, true);
+	}
+	
+	//diz se o estado e um estado final
+	private boolean isFinalState(State state){
+		return state.isFinal;
 	}
 
 	
