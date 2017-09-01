@@ -54,4 +54,5 @@ public class Transicao {
 	public void setNovoEstado(State novoEstado) {
 		this.novoEstado = novoEstado;
 	}
+	
 }

@@ -9,9 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
+import javax.swing.event.ChangeEvent;
 
 import Projeto.MaquinaDeTuring;
 
@@ -24,20 +27,17 @@ public class TuringMachineSimulator extends javax.swing.JFrame {
 	boolean end = false;
 	int delay = 200;
 	int passos = 0;
+	String path = "";
 
 	Timer timer = new Timer(delay, new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			passos++;
-			end = mt.step();
-			atualizarFita(mt.getFita());
-			
-			jLblPassos.setText(Integer.toString(passos));
-			jLblEstadoAtual.setText(mt.estadoAtual.getName());
-			//jTAConsole.setText(jTAConsole.getText() + "\n" + mt.TransicaoAtual);
-			if (end)
-				JbtnResetActionPerformed(null);
+			jBtnPassoActionPerformed(null);
+			if (end) {
+				parar();
+				jBtnPasso.setEnabled(false);
+			}
 		}
 	});
 
@@ -90,17 +90,18 @@ public class TuringMachineSimulator extends javax.swing.JFrame {
 
 		jLblFitaLeft.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
 		jLblFitaLeft.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-		jLblFitaLeft.setText("010101010010101010010101010");
+		jLblFitaLeft.setText(" ");
 
 		jLblFitaHead.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-		jLblFitaHead.setText("#");
+		jLblFitaHead.setText("_");
 		jLblFitaHead.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
 		jLblFitaRight.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
 		jLblFitaRight.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-		jLblFitaRight.setText("010101010010101010010101010");
+		jLblFitaRight.setText(" ");
 
-		jLabel5.setIcon(new javax.swing.ImageIcon("/home/alysson/Documentos/arrowRD.png")); // NOI18N
+
+		jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/arrow.png"))); // NOI18N
 
 		javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
 		jPanel5.setLayout(jPanel5Layout);
@@ -168,6 +169,18 @@ public class TuringMachineSimulator extends javax.swing.JFrame {
 		});
 
 		jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Speed"));
+
+		// *******************
+		jSVelocidade.setMajorTickSpacing(500);
+		jSVelocidade.setMaximum(1000);
+		jSVelocidade.setPaintLabels(true);
+		jSVelocidade.setValue(200);
+		jSVelocidade.addChangeListener(new javax.swing.event.ChangeListener() {
+			public void stateChanged(javax.swing.event.ChangeEvent evt) {
+				jSVelocidadeStateChanged(evt);
+			}
+		});
+		// *******************
 
 		jCBVelMaxima.setText("Full Speed");
 
@@ -330,68 +343,86 @@ public class TuringMachineSimulator extends javax.swing.JFrame {
 	}// </editor-fold>//GEN-END:initComponents
 
 	private void jBtnIniciarActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jBtnIniciarActionPerformed
-		if (jTfPalavra.getText() == "") {
+		if (jCBVelMaxima.isSelected()) {
+			timer.setDelay(0);
+		}
+
+		if (jTfPalavra.getText().equals("")) {
 			JOptionPane.showMessageDialog(null, "Insira uma palavra!");
+
 		} else {
-			// mt.processa(jTfPalavra.getText());
-			System.out.println(mt.estadoAtual);
-
-			// while (!end) {
-
+			mt = new MaquinaDeTuring(path);
+			mt.processa(jTfPalavra.getText());
 			timer.start();
-			System.out.println("time");
-
-			// }
-
 		}
 
 	}// GEN-LAST:event_jBtnIniciarActionPerformed
 
 	private void JbtnResetActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_JbtnResetActionPerformed
-		boolean end = false;
-		timer.stop();
-		System.out.println("stop");
-		// while (!end) {
-		// end = mt.step();
-		// }
-	}// GEN-LAST:event_JbtnResetActionPerformed
-
-	private void jBtnAbrirActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jBtnAbrirActionPerformed
-		/*
-		 * JFileChooser jFCAbrir = new JFileChooser();
-		 * 
-		 * 
-		 * if(jFCAbrir.showOpenDialog(null) == JFileChooser.APPROVE_OPTION){
-		 * String path = (jFCAbrir.getSelectedFile().getAbsolutePath()); mt =
-		 * new MaquinaDeTuring(path); jTAConsole.setText(jTAConsole.getText() +
-		 * "\n" + "Open: " + path);
-		 */
+		parar();
 
 		jBtnIniciar.setEnabled(true);
 		jBtnPasso.setEnabled(true);
 
-		jTfPalavra.setText("10101");
-
-		// }
-		mt = new MaquinaDeTuring(
-				"C:/Users/Angélica/git/MaquinaDeTuring/MaquinaDeTuring/src/testes/arquivoPalindromo.txt");
+		mt = new MaquinaDeTuring(mt.caminho);
 		mt.processa(jTfPalavra.getText());
-		delay = (int)jSVelocidade.getValue();
+
+		atualizarFita(mt.getFita());
+		passos = 0;
+		jLblPassos.setText(Integer.toString(passos));
+		jLblEstadoAtual.setText(mt.estadoAtual.getName());
+
+		end = false;
+
+		jTAConsole.setText("Open: " + path);
+
+	}// GEN-LAST:event_JbtnResetActionPerformed
+
+	void parar() {
+		timer.stop();
+		end = false;
+	}
+
+	private void jSVelocidadeStateChanged(ChangeEvent evt) {
+		this.delay = jSVelocidade.getValue();
+		timer.setDelay(delay);
+		jCBVelMaxima.setSelected(false);
+	}
+
+	private void jBtnAbrirActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jBtnAbrirActionPerformed
+
+		JFileChooser jFCAbrir = new JFileChooser();
+
+		if (jFCAbrir.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			path = (jFCAbrir.getSelectedFile().getAbsolutePath());
+			jBtnIniciar.setEnabled(true);
+			jBtnPasso.setEnabled(true);
+			jTAConsole.setText(jTAConsole.getText() + "\n" + "Open: " + path);
+
+		}
+
 		// System.out.println();
 
 	}// GEN-LAST:event_jBtnAbrirActionPerformed
 
 	private void jBtnPassoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jBtnPassoActionPerformed
-		if (!end) {
-			atualizarFita(mt.getFita());
-			end = mt.step();
-			jLblEstadoAtual.setText(mt.estadoAtual.getName());
-			jTAConsole.setText(jTAConsole.getText() + "\n" + "Passo ");
-
+		if (jTfPalavra.getText().equals("")) {
+			JOptionPane.showMessageDialog(null, "Insira uma palavra!");
 		} else {
-			jBtnPasso.setEnabled(false);
-		}
 
+			if (!end) {
+				atualizarFita(mt.getFita());
+				end = mt.step();
+				jLblEstadoAtual.setText(mt.estadoAtual.getName());
+				jTAConsole.setText(jTAConsole.getText() + "\n" + mt.estadoAtual);
+
+				passos++;
+				jLblPassos.setText(Integer.toString(passos));
+
+			} else {
+				jBtnPasso.setEnabled(false);
+			}
+		}
 	}// GEN-LAST:event_jBtnPassoActionPerformed
 
 	public void atualizarFita(String str) {

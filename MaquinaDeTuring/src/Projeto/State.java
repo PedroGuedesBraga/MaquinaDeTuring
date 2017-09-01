@@ -38,11 +38,9 @@ public class State {
 		return false;
 	}
 	
-	
-	
 	@Override
 	public String toString() {
-		return "State [name=" + name + ", transicoes=" + transicoes.toString() + ", isFinal=" + isFinal + "]";
+		return "State [name=" + name + ", isFinal=" + isFinal + "]";
 	}
 
 	public void addTransicao(Transicao transicao){

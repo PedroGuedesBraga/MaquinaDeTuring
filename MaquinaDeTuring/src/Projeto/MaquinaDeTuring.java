@@ -12,6 +12,7 @@ public class MaquinaDeTuring {
 	public LinkedList<String> listaDeCaracteres;
 	public State estadoAtual;
 	public String TransicaoAtual = "";
+	public String caminho = "";
 	
 	int cabeca; // posica da cabeça na fita
 
@@ -34,6 +35,7 @@ public class MaquinaDeTuring {
 	public MaquinaDeTuring(String caminho) { // Construtor inicializa a maquina
 		this.listaDeCaracteres = new LinkedList<String>();
 		this.states = new LinkedList<State>();
+		this.caminho = caminho;
 		this.buildMaquinaDeTuring(caminho);
 
 	}
@@ -51,17 +53,8 @@ public class MaquinaDeTuring {
 		this.cabeca = 1;
 		this.listaDeCaracteres.addFirst("_");
 		this.listaDeCaracteres.addLast("_");
-		// this.run();
-		// step();
 
-	}
 
-	public void run() {
-		boolean end = false;
-		while (!end) {
-			end = step();
-
-		}
 	}
 
 	public boolean step() {
@@ -103,68 +96,6 @@ public class MaquinaDeTuring {
 			}
 		}
 		return isFinalState(estadoAtual);
-	}
-
-	// roda a maquina com uma cadeia - chamado dentro do processa
-	// *VER COMO TRATAR O CARACTERE BRANCO NA LINKEDLIST
-	private void arun() {
-		// Enquanto nao estiver em um estado de aceitacao ou rejeicao, a maquina
-		// continua rodando - Estados de act/rej comecam com "halt"
-
-		while (!isFinalState(estadoAtual)) { // Enquanto nao chegar nos estados
-												// de acc e rej, a MT roda
-			// System.out.println(this.listaDeCaracteres.toString() + " & " +
-			// this.estadoAtual+ " >> " + this.cabeca);
-			for (Transicao transicao : estadoAtual.getTransicoes()) {
-
-				if (transicao.getSimboloLido().equals(this.caractereAtual) || transicao.getSimboloLido().equals("*")) {
-					if (transicao.getNovoSimbolo().equals("*")) {
-
-					} else {
-						this.listaDeCaracteres.set(cabeca, transicao.getNovoSimbolo());
-						// (1a Verificacao) Verifica se escreveu na ultima ou
-						// primeira posicao, se sim, adicionar "_" branco em uma
-						// das pontas (Abordagem da fita "infinita para os 2
-						// lados"
-						if (!this.listaDeCaracteres.getFirst().equals("_")) {
-							this.listaDeCaracteres.addFirst("_");
-							this.cabeca++; // Se adicionar um branco na frente,
-											// o valor da cabeca altera
-						}
-						if (!this.listaDeCaracteres.getLast().equals("_")) {
-							this.listaDeCaracteres.addLast("_");
-						}
-					}
-					if (transicao.getDirecao().equalsIgnoreCase("r")) {
-						cabeca++;
-					} else if (transicao.getDirecao().equals("*")) {
-						// Se a direcao for *, nao se move
-					} else {
-						cabeca--;
-					}
-					// (2a verificacao) Se a cabeca estiver nas extremidades e
-					// quiser se mover "2+ casas" longe da cadeia/slots ocupados
-					// Ex.: A cabeca esta na ponta (branco), mas se quer mover a
-					// cabeça mais para longe ainda dos slots ocupados. Ou seja,
-					// a kbc esta na ponta e a ponta é branco
-					if (this.cabeca == this.listaDeCaracteres.size() - 1) {
-						this.listaDeCaracteres.addLast("_");
-					} else if (this.cabeca == 0) {
-						this.listaDeCaracteres.addFirst("_");
-						this.cabeca++; // Quando e adicionado branco na frente,
-										// o valor da cabeca aumenta
-					}
-
-					// Atualiza o caractere atual
-					this.caractereAtual = this.listaDeCaracteres.get(cabeca);
-					if (!transicao.getNovoEstado().getName().equals("*")) {
-						estadoAtual = transicao.novoEstado;
-					}
-					break; // Pois senao pode continuar o for para as transicoes
-							// no novo estado atualizado
-				}
-			}
-		}
 	}
 
 	public void buildMaquinaDeTuring(String caminho) {
