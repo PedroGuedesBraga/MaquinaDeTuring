@@ -17,7 +17,7 @@ public class TesteMaquina {
 
 	@Test
 	public void test() {
-	MaquinaDeTuring mt = new MaquinaDeTuring("C:/Users/pedro/Desktop/UFCG/MaquinaDeTuring/MaquinaDeTuring/src/testes/binarioToDecimal.txt");
+	MaquinaDeTuring mt = new MaquinaDeTuring("C:/Users/Angélica/git/MaquinaDeTuring/MaquinaDeTuring/src/testes/binarioToDecimal.txt");
 	
 	mt.processa("10101");
 	System.out.println("Teste binarioToDecimal");
@@ -28,7 +28,7 @@ public class TesteMaquina {
 	
 	@Test
 	public void testMaquina(){
-		MaquinaDeTuring mt = new MaquinaDeTuring("C:/Users/pedro/Desktop/UFCG/MaquinaDeTuring/MaquinaDeTuring/src/testes/arquivoPalindromo.txt");
+		MaquinaDeTuring mt = new MaquinaDeTuring("C:/Users/Angélica/git/MaquinaDeTuring/MaquinaDeTuring/src/testes/arquivoPalindromo.txt");
 		mt.processa("010");
 		LinkedList<String> resultado = mt.listaDeCaracteres; 
 		for(String i : mt.listaDeCaracteres){
@@ -43,7 +43,7 @@ public class TesteMaquina {
 	
 	@Test
 	public void test3(){
-		MaquinaDeTuring mt = new MaquinaDeTuring("C:/Users/pedro/Desktop/UFCG/MaquinaDeTuring/MaquinaDeTuring/src/testes/soma_Binaria.txt");
+		MaquinaDeTuring mt = new MaquinaDeTuring("C:/Users/Angélica/git/MaquinaDeTuring/MaquinaDeTuring/src/testes/soma_Binaria.txt");
 		mt.processa("1_1");
 		
 		System.out.println("Teste soma_Binaria");

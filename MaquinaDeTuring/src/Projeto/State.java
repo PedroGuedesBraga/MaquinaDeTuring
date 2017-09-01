@@ -38,17 +38,14 @@ public class State {
 		return false;
 	}
 	
-	@Override
-	public String toString(){
-		return this.name;
-	}
 	
+	
+	@Override
+	public String toString() {
+		return "State [name=" + name + ", transicoes=" + transicoes.toString() + ", isFinal=" + isFinal + "]";
+	}
+
 	public void addTransicao(Transicao transicao){
 		this.getTransicoes().add(transicao);
 	}
-	
-	
-
-	
-
 }
